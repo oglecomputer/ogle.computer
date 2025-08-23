@@ -1,0 +1,22 @@
+{{ define "main" }}
+<main class="posts">
+
+  {{ with .Content }}
+    <section class="home-custom" style="margin:2rem 0;">
+      {{ . }}
+    </section>
+  {{ end }}
+
+  {{/* Determine which sections count as “posts” */}}
+  {{ $main := site.Params.mainSections | default (slice "posts") }}
+  {{ $pages := where site.RegularPages "Type" "in" $main }}
+
+  {{ $p := .Paginate $pages }}
+  {{ range $p.Pages }}
+    {{ .Render "li" }}
+  {{ end }}
+
+  {{ partial "pagination.html" . }}
+</main>
+{{ end }}
+
